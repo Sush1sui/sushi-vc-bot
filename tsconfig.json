@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true // ✅ Skip type checking for node_modules
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
