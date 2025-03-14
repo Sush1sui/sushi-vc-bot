@@ -1,8 +1,9 @@
-import { ActivityType } from "../node_modules/discord-api-types/v10";
-import { Client } from "../node_modules/discord.js/typings/index";
-import { Collection } from "../node_modules/discord.js/typings/index";
-import { GatewayIntentBits } from "../node_modules/discord-api-types/v10";
-
+import {
+  ActivityType,
+  Client,
+  Collection,
+  GatewayIntentBits,
+} from "discord.js";
 import "dotenv/config";
 import loadCommands from "./loadCommands";
 import loadEvents from "./loadEvents";
@@ -18,8 +19,8 @@ export function startBot() {
       GatewayIntentBits.GuildMembers,
       GatewayIntentBits.GuildMessages,
       GatewayIntentBits.MessageContent,
-      GatewayIntentBits.GuildPresences,
       GatewayIntentBits.GuildMessageReactions,
+      GatewayIntentBits.GuildVoiceStates,
     ],
   }) as CustomClient;
 
@@ -27,6 +28,18 @@ export function startBot() {
 
   loadCommands(client);
   loadEvents(client);
+
+  client.once("ready", () => {
+    client.user?.setPresence({
+      status: "online",
+      activities: [
+        {
+          name: "VC with Finesse!",
+          type: ActivityType.Custom,
+        },
+      ],
+    });
+  });
 
   client.login(process.env.bot_token);
 }

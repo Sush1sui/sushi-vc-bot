@@ -15,6 +15,7 @@ export default function loadCommands(client: CustomClient) {
     for (const file of commandFiles) {
       const filePath = path.join(commandsPath, file);
       const command = require(filePath);
+
       // Set a new item in the Collection with the key as the command name and the value as the exported module
       if ("data" in command.default && "execute" in command.default) {
         client.commands.set(command.default.data.name, command.default);

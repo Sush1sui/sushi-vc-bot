@@ -32,7 +32,9 @@ function pingBot() {
   attemptPing(); // Start the ping loop immediately
 }
 
-export const startServer = () => setInterval(pingBot, 600000);
+export function startServer() {
+  setInterval(pingBot, 600000);
+}
 
 process.on("SIGINT", () => {
   console.log("Server shutting down gracefully");
