@@ -1,4 +1,3 @@
-import { channel } from "diagnostics_channel";
 import mongoose, { Document, Model } from "mongoose";
 
 export interface CustomVCType {

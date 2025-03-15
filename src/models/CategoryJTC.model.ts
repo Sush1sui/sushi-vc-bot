@@ -1,8 +1,9 @@
-import mongoose, { Document, Model, mongo } from "mongoose";
+import mongoose, { Document, Model } from "mongoose";
 
 export interface CategoryJTCType {
   channel_id: string;
   jtc_channel_id: string;
+  interface_id: string;
   custom_vcs_id: string[];
 }
 
@@ -16,6 +17,11 @@ const categoryJTCSchema = new mongoose.Schema({
     unique: true,
   },
   jtc_channel_id: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  interface_id: {
     type: String,
     required: true,
     unique: true,

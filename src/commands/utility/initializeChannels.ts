@@ -52,7 +52,7 @@ export default {
         return;
       }
 
-      const channel = await interaction.guild.channels.create({
+      const jtc_channel = await interaction.guild.channels.create({
         name: "Join to Create",
         type: ChannelType.GuildVoice,
         parent: category.id,
@@ -62,7 +62,6 @@ export default {
             deny: [
               PermissionFlagsBits.Connect, // ❌ Prevent everyone from connecting
               PermissionFlagsBits.SendMessages,
-              PermissionFlagsBits.AttachFiles,
               PermissionFlagsBits.ViewChannel,
             ],
           },
@@ -73,16 +72,39 @@ export default {
               PermissionFlagsBits.Speak,
               PermissionFlagsBits.ViewChannel,
             ],
+            deny: [PermissionFlagsBits.SendMessages],
+          },
+        ],
+      });
+
+      const interface_channel = await interaction.guild.channels.create({
+        name: "vc-interface",
+        type: ChannelType.GuildText,
+        parent: category.id,
+        permissionOverwrites: [
+          {
+            id: interaction.guild.id,
             deny: [
               PermissionFlagsBits.SendMessages,
-              PermissionFlagsBits.AttachFiles,
+              PermissionFlagsBits.ViewChannel,
+            ],
+          },
+          {
+            id: "1292473360114122784",
+            allow: [PermissionFlagsBits.ViewChannel],
+            deny: [
+              PermissionFlagsBits.SendMessages,
+              PermissionFlagsBits.CreateEvents,
+              PermissionFlagsBits.CreatePublicThreads,
+              PermissionFlagsBits.CreatePrivateThreads,
+              PermissionFlagsBits.AddReactions,
             ],
           },
         ],
       });
 
       await interaction.editReply(
-        `Voice channel **<#${channel.id}>** created under category **${category.name}**. Only <@&1292473360114122784> can connect.`
+        `Interace Channel **<#${interface_channel.id}>** and Join To Create Channel **<#${jtc_channel.id}>** created under category **${category.name}**. Only <@&1292473360114122784> can connect.`
       );
       return;
     } catch (error) {
