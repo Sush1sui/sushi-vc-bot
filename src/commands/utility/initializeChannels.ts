@@ -4,6 +4,7 @@ import {
   PermissionFlagsBits,
   SlashCommandBuilder,
 } from "discord.js";
+import { initializeCategoryJTC } from "../../modules/CategoryJTC";
 
 export default {
   data: new SlashCommandBuilder()
@@ -17,7 +18,6 @@ export default {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    console.log("asdasda");
     try {
       const member = interaction.member;
       if (!member || !interaction.guild) {
@@ -28,7 +28,7 @@ export default {
         return;
       }
 
-      await interaction.deferReply({ ephemeral: true });
+      await interaction.deferReply();
       await interaction.editReply("Setting up channels... please wait.");
 
       const category_id = interaction.options.getString("category_id");
@@ -103,9 +103,25 @@ export default {
         ],
       });
 
+      const initializedCategortyJTC = await initializeCategoryJTC(
+        interface_channel.id,
+        jtc_channel.id,
+        category.id
+      );
+
+      if (!initializedCategortyJTC) {
+        interface_channel.delete();
+        jtc_channel.delete();
+        await interaction.editReply(
+          "There is already an initialized VC interface in this category"
+        );
+        return;
+      }
+
       await interaction.editReply(
         `Interace Channel **<#${interface_channel.id}>** and Join To Create Channel **<#${jtc_channel.id}>** created under category **${category.name}**. Only <@&1292473360114122784> can connect.`
       );
+
       return;
     } catch (error) {
       console.error("Error creating voice channel:", error);
