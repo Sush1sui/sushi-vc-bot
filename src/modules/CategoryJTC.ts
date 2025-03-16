@@ -1,5 +1,15 @@
 import CategoryJTC from "../models/CategoryJTC.model";
 
+export async function getAllCategoryJTCs() {
+  try {
+    const CategoryJTCs = await CategoryJTC.find();
+    return CategoryJTCs;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
+
 export async function initializeCategoryJTC(
   interface_id: string,
   jtc_channel_id: string,
@@ -27,6 +37,33 @@ export async function initializeCategoryJTC(
     return initializedCategory;
   } catch (error) {
     console.error(`Error initializing category: ${(error as Error).message}`);
+    return null;
+  }
+}
+
+export async function deleteInitializedCategoryJTC(channel_id: string) {
+  try {
+    const deletedCategoryJTC = await CategoryJTC.findOneAndDelete({
+      channel_id,
+    });
+    return deletedCategoryJTC;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function addCustomVC(category_id: string, custom_vc_id: string) {
+  try {
+    const updatedCategory = await CategoryJTC.findOneAndUpdate(
+      { channel_id: category_id },
+      { $addToSet: { custom_vcs_id: custom_vc_id } }, // Prevents duplication
+      { new: true, upsert: true }
+    );
+    console.log(updatedCategory);
+    return updatedCategory;
+  } catch (error) {
+    console.log(error);
     return null;
   }
 }
