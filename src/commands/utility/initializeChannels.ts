@@ -124,8 +124,8 @@ export default {
 
       return;
     } catch (error) {
-      console.error("Error creating voice channel:", error);
-      await interaction.editReply("Failed to create voice channel.");
+      console.error("Error initializing channels:", error);
+      await interaction.editReply("Failed to initialized channels.");
       return;
     }
   },

@@ -126,3 +126,24 @@ export async function changeOwnerCustomVC(
     return null;
   }
 }
+
+export async function findCategory(channel_id: string) {
+  try {
+    const category = await CategoryJTC.findOne({ channel_id });
+    if (!category) return null;
+    return category;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function deleteCategory(channel_id: string) {
+  try {
+    const deletedCategory = await CategoryJTC.findOneAndDelete({ channel_id });
+    return deletedCategory;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

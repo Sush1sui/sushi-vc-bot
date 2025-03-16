@@ -26,7 +26,11 @@ export default {
             permissionOverwrites: [
               {
                 id: newState.guild.id,
-                deny: [PermissionFlagsBits.Connect],
+                deny: [
+                  PermissionFlagsBits.Connect,
+                  PermissionFlagsBits.ViewChannel,
+                  PermissionFlagsBits.SendMessages,
+                ],
               },
               {
                 id: newState.member!.id,
@@ -38,7 +42,12 @@ export default {
               },
               {
                 id: "1292473360114122784", // Finest Role,
-                allow: [PermissionFlagsBits.Connect, PermissionFlagsBits.Speak],
+                allow: [
+                  PermissionFlagsBits.Connect,
+                  PermissionFlagsBits.Speak,
+                  PermissionFlagsBits.ViewChannel,
+                  PermissionFlagsBits.SendMessages,
+                ],
               },
             ],
           });
