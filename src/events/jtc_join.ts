@@ -9,9 +9,9 @@ export default {
       const categoryJTCs = await getAllCategoryJTCs();
 
       for (const category of categoryJTCs) {
-        // User joined a VC
+        // User joined or was moved to a JTC channel
         if (
-          !oldState.channel &&
+          (!oldState.channel || oldState.channel.id !== newState.channel?.id) &&
           newState.channel?.id === category.jtc_channel_id
         ) {
           console.log(
@@ -20,7 +20,7 @@ export default {
 
           // ✅ Create a temporary channel for the user
           const newCustomVC = await newState.guild.channels.create({
-            name: `${newState.member?.user.username}'s Channel`,
+            name: `${newState.member?.user.username}'s VC`,
             type: ChannelType.GuildVoice,
             parent: newState.channel.parentId!,
             permissionOverwrites: [
@@ -36,6 +36,10 @@ export default {
                   PermissionFlagsBits.ManageChannels,
                 ],
               },
+              {
+                id: "1292473360114122784", // Finest Role,
+                allow: [PermissionFlagsBits.Connect, PermissionFlagsBits.Speak],
+              },
             ],
           });
 
@@ -47,8 +51,9 @@ export default {
           );
 
           const updatedCategory = await addCustomVC(
-            category.id,
-            newCustomVC.id
+            category.channel_id,
+            newCustomVC.id,
+            newState.member?.id!
           );
           if (!updatedCategory) {
             throw new Error("Creating custom VC is having error/s");

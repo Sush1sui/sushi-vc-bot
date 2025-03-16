@@ -26,13 +26,7 @@ const categoryJTCSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  custom_vcs_id: [
-    {
-      type: String,
-      required: true,
-      unique: true,
-    },
-  ],
+  custom_vcs_id: { type: [String], default: [] },
 });
 
 export default mongoose.model<CategoryJTCDocument, CategoryJTCModel>(
