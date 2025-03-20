@@ -20,7 +20,7 @@ export default {
 
           // ✅ Create a temporary channel for the user
           const newCustomVC = await newState.guild.channels.create({
-            name: `${newState.member?.user.username}'s VC`,
+            name: `${newState.member?.user.displayName}'s VC`,
             type: ChannelType.GuildVoice,
             parent: newState.channel.parentId!,
             permissionOverwrites: [
@@ -31,6 +31,7 @@ export default {
                   PermissionFlagsBits.ViewChannel,
                   PermissionFlagsBits.SendMessages,
                 ],
+                allow: [],
               },
               {
                 id: newState.member!.id,
@@ -38,7 +39,9 @@ export default {
                   PermissionFlagsBits.Connect,
                   PermissionFlagsBits.Speak,
                   PermissionFlagsBits.ManageChannels,
+                  PermissionFlagsBits.ReadMessageHistory,
                 ],
+                deny: [],
               },
               {
                 id: "1292473360114122784", // Finest Role,
@@ -47,7 +50,9 @@ export default {
                   PermissionFlagsBits.Speak,
                   PermissionFlagsBits.ViewChannel,
                   PermissionFlagsBits.SendMessages,
+                  PermissionFlagsBits.ReadMessageHistory,
                 ],
+                deny: [],
               },
             ],
           });

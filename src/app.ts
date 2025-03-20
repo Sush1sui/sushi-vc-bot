@@ -12,6 +12,8 @@ export interface CustomClient extends Client {
   commands: Collection<string, any>;
 }
 
+export const finest_roleID = "1292473360114122784";
+
 export function startBot() {
   const client = new Client({
     intents: [

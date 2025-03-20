@@ -13,6 +13,7 @@ export async function getAllCategoryJTCs() {
 
 export async function initializeCategoryJTC(
   interface_id: string,
+  interface_message_id: string,
   jtc_channel_id: string,
   category_id: string
 ) {
@@ -33,6 +34,7 @@ export async function initializeCategoryJTC(
       interface_id,
       jtc_channel_id,
       custom_vcs_id: [],
+      interface_message_id,
     });
 
     return initializedCategory;
@@ -121,6 +123,26 @@ export async function changeOwnerCustomVC(
     );
 
     return updatedCustomVC;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export async function findCustomVC(channel_id: string) {
+  try {
+    const customVC = await CustomVC.findOne({ channel_id });
+    return customVC;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export async function findOwnCustomVC(owner_id: string) {
+  try {
+    const customVC = await CustomVC.findOne({ owner_id });
+    return customVC;
   } catch (error) {
     console.log(error);
     return null;

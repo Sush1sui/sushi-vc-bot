@@ -1,5 +1,6 @@
 import { Client, Events } from "discord.js";
 import deployCommands from "../deploy-commands";
+import { initializeButtonCollector } from "../modules/interface_button_functions";
 
 export default {
   name: Events.ClientReady,
@@ -12,6 +13,8 @@ export default {
     }
 
     deployCommands();
+    initializeButtonCollector(client);
+
     console.log(`Logged in as ${client.user.tag}`);
   },
 };

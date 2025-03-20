@@ -10,6 +10,7 @@ import {
   interface_buttons_row2,
   interface_embed,
 } from "../../modules/interface_template";
+import { lockVC, unlockVC } from "../../modules/interface_button_functions";
 
 export default {
   data: new SlashCommandBuilder()
@@ -108,8 +109,28 @@ export default {
         ],
       });
 
+      const interface_message = await interface_channel.send({
+        embeds: [interface_embed],
+        components: [interface_buttons_row1, interface_buttons_row2],
+      });
+
+      const collector = interface_message.createMessageComponentCollector();
+
+      collector.on("collect", async (interaction_button) => {
+        if (!interaction_button.isButton()) return;
+
+        console.log(`Interaction received: ${interaction_button.customId}`);
+
+        if (interaction_button.customId === "lock_vc") {
+          lockVC(interaction_button);
+        } else if (interaction_button.customId === "unlock_vc") {
+          unlockVC(interaction_button);
+        }
+      });
+
       const initializedCategortyJTC = await initializeCategoryJTC(
         interface_channel.id,
+        interface_message.id,
         jtc_channel.id,
         category.id
       );
@@ -122,11 +143,6 @@ export default {
         );
         return;
       }
-
-      await interface_channel.send({
-        embeds: [interface_embed],
-        components: [interface_buttons_row1, interface_buttons_row2],
-      });
 
       await interaction.editReply(
         `Interace Channel **<#${interface_channel.id}>** and Join To Create Channel **<#${jtc_channel.id}>** created under category **${category.name}**. Only <@&1292473360114122784> can connect.`
