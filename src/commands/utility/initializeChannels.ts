@@ -5,6 +5,11 @@ import {
   SlashCommandBuilder,
 } from "discord.js";
 import { initializeCategoryJTC } from "../../modules/CategoryJTC";
+import {
+  interface_buttons_row1,
+  interface_buttons_row2,
+  interface_embed,
+} from "../../modules/interface_template";
 
 export default {
   data: new SlashCommandBuilder()
@@ -118,14 +123,24 @@ export default {
         return;
       }
 
+      await interface_channel.send({
+        embeds: [interface_embed],
+        components: [interface_buttons_row1, interface_buttons_row2],
+      });
+
       await interaction.editReply(
         `Interace Channel **<#${interface_channel.id}>** and Join To Create Channel **<#${jtc_channel.id}>** created under category **${category.name}**. Only <@&1292473360114122784> can connect.`
       );
 
       return;
     } catch (error) {
-      console.error("Error initializing channels:", error);
-      await interaction.editReply("Failed to initialized channels.");
+      console.error(
+        "There is something wrong with initializing channels: ",
+        error
+      );
+      await interaction.editReply(
+        "There is something wrong with initializing channels."
+      );
       return;
     }
   },
