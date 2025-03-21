@@ -8,9 +8,21 @@ import { initializeCategoryJTC } from "../../modules/CategoryJTC";
 import {
   interface_buttons_row1,
   interface_buttons_row2,
+  interface_buttons_row3,
   interface_embed,
 } from "../../modules/interface_template";
-import { lockVC, unlockVC } from "../../modules/interface_button_functions";
+import {
+  blacklist,
+  claimVC,
+  hide_unhide_VC,
+  inviteVC,
+  limitVC,
+  lockVC,
+  permitVC,
+  promptRenameVC,
+  transferOwnership,
+  unlockVC,
+} from "../../modules/interface_button_functions";
 
 export default {
   data: new SlashCommandBuilder()
@@ -111,7 +123,11 @@ export default {
 
       const interface_message = await interface_channel.send({
         embeds: [interface_embed],
-        components: [interface_buttons_row1, interface_buttons_row2],
+        components: [
+          interface_buttons_row1,
+          interface_buttons_row2,
+          interface_buttons_row3,
+        ],
       });
 
       const collector = interface_message.createMessageComponentCollector();
@@ -122,9 +138,27 @@ export default {
         console.log(`Interaction received: ${interaction_button.customId}`);
 
         if (interaction_button.customId === "lock_vc") {
-          lockVC(interaction_button);
+          await lockVC(interaction_button);
         } else if (interaction_button.customId === "unlock_vc") {
-          unlockVC(interaction_button);
+          await unlockVC(interaction_button);
+        } else if (interaction_button.customId === "hide") {
+          await hide_unhide_VC(interaction_button, "hide");
+        } else if (interaction_button.customId === "unhide") {
+          await hide_unhide_VC(interaction_button);
+        } else if (interaction_button.customId === "limit") {
+          await limitVC(interaction_button);
+        } else if (interaction_button.customId === "invite") {
+          await inviteVC(interaction_button);
+        } else if (interaction_button.customId === "blacklist") {
+          await blacklist(interaction_button);
+        } else if (interaction_button.customId === "permit") {
+          await permitVC(interaction_button);
+        } else if (interaction_button.customId === "rename") {
+          await promptRenameVC(interaction_button);
+        } else if (interaction_button.customId === "claim_vc") {
+          await claimVC(interaction_button);
+        } else if (interaction_button.customId === "transfer_owner") {
+          await transferOwnership(interaction_button);
         }
       });
 

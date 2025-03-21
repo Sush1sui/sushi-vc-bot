@@ -40,6 +40,7 @@ export default {
                   PermissionFlagsBits.Speak,
                   PermissionFlagsBits.ManageChannels,
                   PermissionFlagsBits.ReadMessageHistory,
+                  PermissionFlagsBits.MoveMembers,
                 ],
                 deny: [],
               },

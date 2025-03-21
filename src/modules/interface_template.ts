@@ -70,6 +70,14 @@ export const interface_buttons_row1 =
 export const interface_buttons_row2 =
   new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
+      .setCustomId("invite")
+      .setEmoji({
+        id: "1293802491967836246",
+        name: "invite",
+      })
+      .setLabel("Invite")
+      .setStyle(ButtonStyle.Primary),
+    new ButtonBuilder()
       .setCustomId("blacklist")
       .setEmoji({
         id: "1293802490956873738",
@@ -100,7 +108,11 @@ export const interface_buttons_row2 =
         name: "claim_vc",
       })
       .setLabel("Claim VC")
-      .setStyle(ButtonStyle.Primary),
+      .setStyle(ButtonStyle.Primary)
+  );
+
+export const interface_buttons_row3 =
+  new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
       .setCustomId("transfer_owner")
       .setEmoji({
