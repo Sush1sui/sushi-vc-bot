@@ -21,12 +21,18 @@ export async function hide_unhide_VC(
 
   if (!customVC) {
     console.error("Failed to fetch custom VC.");
+    await interaction.editReply({
+      content: "Something went wrong, please talk to the dev.",
+    });
     return;
   }
 
   const finestRole = interaction.guild.roles.cache.get(finest_roleID);
   if (!finestRole) {
     console.error("Failed to fetch finest role.");
+    await interaction.editReply({
+      content: "Something went wrong, please talk to the dev.",
+    });
     return;
   }
 

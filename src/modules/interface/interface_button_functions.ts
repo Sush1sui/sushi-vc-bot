@@ -58,6 +58,15 @@ export async function initializeButtonCollector(client: Client) {
             return;
           }
 
+          if (category.id !== member.voice.channel?.parentId) {
+            await interaction.reply({
+              content:
+                "**You need to be in a voice channel from my VC interface.**",
+              ephemeral: true,
+            });
+            return;
+          }
+
           switch (interaction.customId) {
             case "lock_vc":
               lockVC(interaction);
