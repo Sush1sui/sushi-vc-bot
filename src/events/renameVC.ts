@@ -1,5 +1,5 @@
 import { Interaction } from "discord.js";
-import { handleRenameVC } from "../modules/interface_button_functions";
+import { handleRenameVC } from "../modules/interface/buttons/renameVC.button";
 
 export default {
   name: "interactionCreate",

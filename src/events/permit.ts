@@ -1,5 +1,5 @@
 import { Interaction } from "discord.js";
-import { handleSelectedPermittedUsers } from "../modules/interface_button_functions";
+import { handleSelectedPermittedUsers } from "../modules/interface/buttons/permitVC.button";
 
 export default {
   name: "interactionCreate",

@@ -10,19 +10,17 @@ import {
   interface_buttons_row2,
   interface_buttons_row3,
   interface_embed,
-} from "../../modules/interface_template";
-import {
-  blacklist,
-  claimVC,
-  hide_unhide_VC,
-  inviteVC,
-  limitVC,
-  lockVC,
-  permitVC,
-  promptRenameVC,
-  transferOwnership,
-  unlockVC,
-} from "../../modules/interface_button_functions";
+} from "../../modules/interface/interface_template";
+import { lockVC } from "../../modules/interface/buttons/lockVC";
+import { unlockVC } from "../../modules/interface/buttons/unlockVC.button";
+import { hide_unhide_VC } from "../../modules/interface/buttons/hide_unhide.button";
+import { limitVC } from "../../modules/interface/buttons/limitVC";
+import { inviteVC } from "../../modules/interface/buttons/invite.button";
+import { blacklist } from "../../modules/interface/buttons/blacklist.button";
+import { permitVC } from "../../modules/interface/buttons/permitVC.button";
+import { promptRenameVC } from "../../modules/interface/buttons/renameVC.button";
+import { claimVC } from "../../modules/interface/buttons/claimVC.button";
+import { transferOwnership } from "../../modules/interface/buttons/transferOwnership.button";
 
 export default {
   data: new SlashCommandBuilder()
@@ -137,28 +135,56 @@ export default {
 
         console.log(`Interaction received: ${interaction_button.customId}`);
 
-        if (interaction_button.customId === "lock_vc") {
-          await lockVC(interaction_button);
-        } else if (interaction_button.customId === "unlock_vc") {
-          await unlockVC(interaction_button);
-        } else if (interaction_button.customId === "hide") {
-          await hide_unhide_VC(interaction_button, "hide");
-        } else if (interaction_button.customId === "unhide") {
-          await hide_unhide_VC(interaction_button);
-        } else if (interaction_button.customId === "limit") {
-          await limitVC(interaction_button);
-        } else if (interaction_button.customId === "invite") {
-          await inviteVC(interaction_button);
-        } else if (interaction_button.customId === "blacklist") {
-          await blacklist(interaction_button);
-        } else if (interaction_button.customId === "permit") {
-          await permitVC(interaction_button);
-        } else if (interaction_button.customId === "rename") {
-          await promptRenameVC(interaction_button);
-        } else if (interaction_button.customId === "claim_vc") {
-          await claimVC(interaction_button);
-        } else if (interaction_button.customId === "transfer_owner") {
-          await transferOwnership(interaction_button);
+        const member = await interaction_button.guild?.members.fetch(
+          interaction_button.user.id
+        );
+
+        // Check if the user is NOT in a voice channel
+        if (!member?.voice.channelId) {
+          await interaction_button.reply({
+            content:
+              "**You need to be in a voice channel to use this button.**",
+            ephemeral: true,
+          });
+          return;
+        }
+
+        switch (interaction_button.customId) {
+          case "lock_vc":
+            lockVC(interaction_button);
+            break;
+          case "unlock_vc":
+            unlockVC(interaction_button);
+            break;
+          case "hide":
+            await hide_unhide_VC(interaction_button, "hide");
+            break;
+          case "unhide":
+            await hide_unhide_VC(interaction_button);
+            break;
+          case "limit":
+            await limitVC(interaction_button);
+            break;
+          case "invite":
+            await inviteVC(interaction_button);
+            break;
+          case "blacklist":
+            await blacklist(interaction_button);
+            break;
+          case "permit":
+            await permitVC(interaction_button);
+            break;
+          case "rename":
+            await promptRenameVC(interaction_button);
+            break;
+          case "claim_vc":
+            await claimVC(interaction_button);
+            break;
+          case "transfer_owner":
+            await transferOwnership(interaction_button);
+            break;
+          default:
+            break;
         }
       });
 

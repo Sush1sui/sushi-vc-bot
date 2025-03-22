@@ -1,5 +1,5 @@
 import { Interaction } from "discord.js";
-import { handleBlacklistSelection } from "../modules/interface_button_functions";
+import { handleBlacklistSelection } from "../modules/interface/buttons/blacklist.button";
 
 export default {
   name: "interactionCreate",

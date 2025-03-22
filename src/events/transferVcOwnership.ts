@@ -1,5 +1,5 @@
 import { Interaction } from "discord.js";
-import { handleTransferOwnership } from "../modules/interface_button_functions";
+import { handleTransferOwnership } from "../modules/interface/buttons/transferOwnership.button";
 
 export default {
   name: "interactionCreate",
