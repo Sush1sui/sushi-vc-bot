@@ -8,7 +8,7 @@ export default {
     try {
       const categoryJTCs = await getAllCategoryJTCs();
 
-      if (!oldState.channel || newState.channel) return;
+      if (!oldState.channel) return;
 
       const channel = oldState.channel;
 
