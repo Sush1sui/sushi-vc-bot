@@ -1,11 +1,5 @@
-import {
-  ButtonInteraction,
-  Client,
-  TextChannel,
-  VoiceChannel,
-} from "discord.js";
-import { finest_roleID } from "../../app";
-import { findOwnCustomVC, getAllCategoryJTCs } from "../CategoryJTC";
+import { ButtonInteraction, Client, TextChannel } from "discord.js";
+import { getAllCategoryJTCs } from "../CategoryJTC";
 import { transferOwnership } from "./buttons/transferOwnership.button";
 import { claimVC } from "./buttons/claimVC.button";
 import { promptRenameVC } from "./buttons/renameVC.button";

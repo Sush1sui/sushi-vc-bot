@@ -1,6 +1,6 @@
 import { Client, Events } from "discord.js";
 import deployCommands from "../deploy-commands";
-import { initializeButtonCollector } from "../modules/interface_button_functions";
+import { initializeButtonCollector } from "../modules/interface/interface_button_functions";
 
 export default {
   name: Events.ClientReady,

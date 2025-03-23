@@ -4,7 +4,7 @@ import { getAllCategoryJTCs, removeCustomVC } from "../modules/CategoryJTC";
 export default {
   name: "voiceStateUpdate",
   once: false,
-  async execute(oldState: VoiceState, newState: VoiceState) {
+  async execute(oldState: VoiceState, _newState: VoiceState) {
     try {
       const categoryJTCs = await getAllCategoryJTCs();
 
