@@ -1,5 +1,9 @@
-import { VoiceState } from "discord.js";
-import { getAllCategoryJTCs, removeCustomVC } from "../modules/CategoryJTC";
+import { PermissionFlagsBits, VoiceState } from "discord.js";
+import {
+  changeOwnerCustomVC,
+  getAllCategoryJTCs,
+  removeCustomVC,
+} from "../modules/CategoryJTC";
 
 export default {
   name: "voiceStateUpdate",
@@ -25,45 +29,44 @@ export default {
             await channel.delete();
 
             console.log(`Removed ${channel.id} from database`);
-          } // else {
-          //   // Verify if the person who left was the owner
-          //   const oldOwner = oldState.member;
-          //   if (
-          //     oldOwner &&
-          //     channel
-          //       .permissionsFor(oldOwner)
-          //       ?.has(PermissionFlagsBits.ManageChannels)
-          //   ) {
-          //     console.log(
-          //       `${oldOwner.user.tag} was the owner of ${channel.name}`
-          //     );
+          } else if (channel.members.size === 1) {
+            // Get the remaining member
+            const remainingMember = channel.members.first();
+            if (!remainingMember) return;
 
-          //     // ✅ Find a new owner among remaining members
-          //     const members = Array.from(channel.members.values());
-          //     const newOwner = members[0]; // First available member becomes the new owner
+            // Check if they are not already the owner
+            const oldOwner = oldState.member;
+            if (
+              oldOwner &&
+              channel
+                .permissionsFor(oldOwner)
+                ?.has(PermissionFlagsBits.ManageChannels) &&
+              oldOwner.id !== remainingMember.id
+            ) {
+              console.log(
+                `${oldOwner.user.tag} left, transferring ownership to ${remainingMember.user.tag}`
+              );
 
-          //     if (newOwner) {
-          //       console.log(`Transferring ownership to ${newOwner.user.tag}`);
+              // Remove ManageChannels and MoveMembers permission from the old owner
+              await channel.permissionOverwrites.edit(oldOwner.id, {
+                ManageChannels: false,
+                MoveMembers: false,
+              });
 
-          //       // ✅ Remove ManageChannels permission from the old owner
-          //       await channel.permissionOverwrites.edit(oldOwner.id, {
-          //         ManageChannels: false,
-          //       });
+              // Grant ManageChannels and MoveMembers permission to the new owner
+              await channel.permissionOverwrites.edit(remainingMember.id, {
+                ManageChannels: true,
+                MoveMembers: true,
+              });
 
-          //       // ✅ Grant ManageChannels permission to the new owner
-          //       await channel.permissionOverwrites.edit(newOwner.id, {
-          //         ManageChannels: true,
-          //       });
+              // Update the database with the new owner
+              await changeOwnerCustomVC(channel.id, remainingMember.id);
 
-          //       // ✅ Update the database with the new owner
-          //       await changeOwnerCustomVC(channel.id, newOwner.id);
-
-          //       console.log(`Ownership transferred to ${newOwner.user.tag}`);
-
-          //       await channel.setName(`${newOwner.displayName}'s VC`);
-          //     }
-          //   }
-          // }
+              console.log(
+                `Ownership transferred to ${remainingMember.user.tag}`
+              );
+            }
+          }
         }
       }
     } catch (error) {
