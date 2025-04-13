@@ -1,9 +1,5 @@
-import { PermissionFlagsBits, VoiceState } from "discord.js";
-import {
-  changeOwnerCustomVC,
-  getAllCategoryJTCs,
-  removeCustomVC,
-} from "../modules/CategoryJTC";
+import { VoiceState } from "discord.js";
+import { getAllCategoryJTCs, removeCustomVC } from "../modules/CategoryJTC";
 
 export default {
   name: "voiceStateUpdate",
