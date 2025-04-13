@@ -44,7 +44,7 @@ export default {
       await customVC.setUserLimit(limit);
       await interaction.reply({
         content: `✅ Voice channel limit set to **${limit}** users.`,
-        ephemeral: true,
+        flags: "Ephemeral",
       });
     } catch (error) {
       console.error("Error setting VC limit:", error);

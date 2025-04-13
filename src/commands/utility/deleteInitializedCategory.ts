@@ -25,7 +25,7 @@ export default {
       if (!member || !interaction.guild) {
         await interaction.reply({
           content: "This command can only be used in a guild.",
-          ephemeral: true,
+          flags: "Ephemeral",
         });
         return;
       }

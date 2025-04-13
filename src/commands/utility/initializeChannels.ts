@@ -39,7 +39,7 @@ export default {
       if (!member || !interaction.guild) {
         await interaction.reply({
           content: "This command can only be used in a guild.",
-          ephemeral: true,
+          flags: "Ephemeral",
         });
         return;
       }
@@ -144,7 +144,16 @@ export default {
           await interaction_button.reply({
             content:
               "**You need to be in a voice channel to use this button.**",
-            ephemeral: true,
+            flags: "Ephemeral",
+          });
+          return;
+        }
+
+        if (interface_channel.parentId !== member.voice.channel?.parentId) {
+          await interaction.reply({
+            content:
+              "**You need to be in a voice channel from my VC interface.**",
+            flags: "Ephemeral",
           });
           return;
         }

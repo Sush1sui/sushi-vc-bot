@@ -27,6 +27,10 @@ export async function initializeButtonCollector(client: Client) {
       )) as TextChannel;
 
       if (interface_channel) {
+        console.log("interface channel:", interface_channel.name);
+        console.log(
+          `initializing button collectors for ${interface_channel.name}`
+        );
         const interface_message = await interface_channel.messages.fetch(
           category.interface_message_id
         );
@@ -47,16 +51,16 @@ export async function initializeButtonCollector(client: Client) {
             await interaction.reply({
               content:
                 "**You need to be in a voice channel to use this button.**",
-              ephemeral: true,
+              flags: "Ephemeral",
             });
             return;
           }
 
-          if (category.id !== member.voice.channel?.parentId) {
+          if (interface_channel.parentId !== member.voice.channel?.parentId) {
             await interaction.reply({
               content:
                 "**You need to be in a voice channel from my VC interface.**",
-              ephemeral: true,
+              flags: "Ephemeral",
             });
             return;
           }
@@ -99,6 +103,9 @@ export async function initializeButtonCollector(client: Client) {
               break;
           }
         });
+        console.log(
+          `initializing button collectors for ${interface_channel.name} done`
+        );
       }
     }
   } catch (error) {
