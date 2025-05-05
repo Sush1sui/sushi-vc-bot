@@ -1,5 +1,5 @@
 import { ButtonInteraction, Client, TextChannel } from "discord.js";
-import { getAllCategoryJTCs } from "../CategoryJTC";
+import { findOwnCustomVC, getAllCategoryJTCs } from "../CategoryJTC";
 import { transferOwnership } from "./buttons/transferOwnership.button";
 import { claimVC } from "./buttons/claimVC.button";
 import { promptRenameVC } from "./buttons/renameVC.button";
@@ -45,6 +45,16 @@ export async function initializeButtonCollector(client: Client) {
           const member = await interaction.guild?.members.fetch(
             interaction.user.id
           );
+
+          const customVC = await findOwnCustomVC(interaction.user.id);
+
+          if (!customVC) {
+            await interaction.reply({
+              content: "You are not an owner of a VC",
+              flags: "Ephemeral",
+            });
+            return;
+          }
 
           // Check if the user is NOT in a voice channel
           if (!member?.voice.channelId) {
