@@ -7,7 +7,6 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 const SERVER_LINK = process.env.SERVER_LINK;
-let timeoutId: NodeJS.Timeout;
 
 app.get("/", (_req: express.Request, res: express.Response) => {
   res.send("Bot is running");
@@ -16,24 +15,32 @@ app.get("/", (_req: express.Request, res: express.Response) => {
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 
 function pingBot() {
-  if (!SERVER_LINK) return;
+  if (!SERVER_LINK) {
+    console.log(
+      "SERVER_LINK environment variable not set. Pinging is disabled."
+    );
+    return;
+  }
 
-  const attemptPing = () => {
-    fetch(SERVER_LINK)
-      .then((res) => res.text())
-      .then((text) => console.log(`Ping successful: ${text}`))
-      .catch((err) => {
-        clearTimeout(timeoutId);
-        console.log(`Ping failed, retrying: ${err}`);
-        timeoutId = setTimeout(attemptPing, 5000);
-      });
-  };
-
-  attemptPing(); // Start the ping loop immediately
+  fetch(SERVER_LINK)
+    .then((res) => {
+      if (res.ok) {
+        return res.text();
+      } else {
+        throw new Error(`Ping failed with status: ${res.status}`);
+      }
+    })
+    .then((text) => {
+      console.log(`Ping successful: ${text}`);
+    })
+    .catch((err) => {
+      console.error(`Ping failed: ${err.message}`);
+    });
 }
 
 export function startServer() {
-  setInterval(pingBot, 600000);
+  pingBot(); // Initial ping
+  setInterval(pingBot, 300000); // Ping every 5 minutes
 }
 
 process.on("SIGINT", () => {
