@@ -14,9 +14,7 @@ export interface CustomClient extends Client {
 
 export const finest_roleID = "1292473360114122784";
 
-export let isBotOnline = false;
-
-const client = new Client({
+export const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
@@ -49,16 +47,14 @@ export function startBot() {
     .login(process.env.bot_token)
     .then(() => {
       console.log(`Logged in as ${client.user?.tag}`);
-      isBotOnline = true;
     })
     .catch((error) => {
       console.error("Failed to log in:", error);
-      isBotOnline = false;
     });
 }
 
 setTimeout(() => {
-  if (!isBotOnline) {
+  if (!client.isReady()) {
     console.error("Bot failed to start within 30 seconds, retrying...");
     startBot();
   }
