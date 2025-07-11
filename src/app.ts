@@ -14,35 +14,37 @@ export interface CustomClient extends Client {
 
 export const finest_roleID = "1292473360114122784";
 
-export function startBot() {
-  const client = new Client({
-    intents: [
-      GatewayIntentBits.Guilds,
-      GatewayIntentBits.GuildMembers,
-      GatewayIntentBits.GuildMessages,
-      GatewayIntentBits.MessageContent,
-      GatewayIntentBits.GuildMessageReactions,
-      GatewayIntentBits.GuildVoiceStates,
+export let isBotOnline = false;
+
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.GuildVoiceStates,
+  ],
+}) as CustomClient;
+
+client.commands = new Collection();
+
+loadCommands(client);
+loadEvents(client);
+
+client.once("ready", () => {
+  client.user?.setPresence({
+    status: "online",
+    activities: [
+      {
+        name: "VC with Finesse!",
+        type: ActivityType.Custom,
+      },
     ],
-  }) as CustomClient;
-
-  client.commands = new Collection();
-
-  loadCommands(client);
-  loadEvents(client);
-
-  client.once("ready", () => {
-    client.user?.setPresence({
-      status: "online",
-      activities: [
-        {
-          name: "VC with Finesse!",
-          type: ActivityType.Custom,
-        },
-      ],
-    });
   });
+});
 
+export function startBot() {
   client
     .login(process.env.bot_token)
     .then(() => {

@@ -12,4 +12,3 @@ mongoose
   .catch((e) => console.log(e));
 
 startServer();
-startBot();

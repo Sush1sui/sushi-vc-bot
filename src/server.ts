@@ -1,5 +1,6 @@
 import express from "express";
 import "dotenv/config";
+import { isBotOnline, startBot } from "./app";
 
 const app = express() as express.Application;
 const PORT = process.env.PORT || 3000;
@@ -32,6 +33,7 @@ function pingBot() {
     })
     .then((text) => {
       console.log(`Ping successful: ${text}`);
+      if (!isBotOnline) startBot();
     })
     .catch((err) => {
       console.error(`Ping failed: ${err.message}`);
