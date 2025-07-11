@@ -43,7 +43,14 @@ export function startBot() {
     });
   });
 
-  client.login(process.env.bot_token);
+  client
+    .login(process.env.bot_token)
+    .then(() => {
+      console.log(`Logged in as ${client.user?.tag}`);
+    })
+    .catch((error) => {
+      console.error("Failed to log in:", error);
+    });
 }
 
 // Handle unhandled promise rejections
