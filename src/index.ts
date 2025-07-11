@@ -1,5 +1,4 @@
 import { startServer } from "./server";
-import { startBot } from "./app";
 import mongoose from "mongoose";
 
 const uri = process.env.DB_CONNECTION_STRING;

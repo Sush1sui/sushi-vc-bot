@@ -49,9 +49,11 @@ export function startBot() {
     .login(process.env.bot_token)
     .then(() => {
       console.log(`Logged in as ${client.user?.tag}`);
+      isBotOnline = true;
     })
     .catch((error) => {
       console.error("Failed to log in:", error);
+      isBotOnline = false;
     });
 }
 
