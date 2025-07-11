@@ -57,6 +57,13 @@ export function startBot() {
     });
 }
 
+setTimeout(() => {
+  if (!isBotOnline) {
+    console.error("Bot failed to start within 30 seconds, retrying...");
+    startBot();
+  }
+}, 30000);
+
 // Handle unhandled promise rejections
 process.on("unhandledRejection", (error) => {
   console.error("Unhandled promise rejection:", error);
