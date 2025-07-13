@@ -43,6 +43,7 @@ client.once("ready", () => {
 });
 
 export function startBot() {
+  console.log("Starting bot...");
   client
     .login(process.env.bot_token)
     .then(() => {
